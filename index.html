@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>URL Data Table</title>
+  <style>
+    table {
+      border-collapse: collapse;
+      margin: 20px;
+      width: 50%;
+    }
+    th, td {
+      padding: 10px;
+      border: 1px solid #444;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Extracted URL Data</h2>
+  <table id="data-table">
+    <thead>
+      <tr>
+        <th>Parameter</th>
+        <th>Value</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Data will be inserted here -->
+    </tbody>
+  </table>
+
+  <script>
+    // Function to extract and display URL parameters
+    function displayURLData() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const tableBody = document.querySelector("#data-table tbody");
+
+      urlParams.forEach((value, key) => {
+        const row = document.createElement("tr");
+
+        const keyCell = document.createElement("td");
+        keyCell.textContent = key;
+
+        const valueCell = document.createElement("td");
+        valueCell.textContent = value;
+
+        row.appendChild(keyCell);
+        row.appendChild(valueCell);
+        tableBody.appendChild(row);
+      });
+    }
+
+    // Call function on page load
+    window.onload = displayURLData;
+  </script>
+
+</body>
+</html>
