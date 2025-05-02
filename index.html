@@ -2,59 +2,96 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>URL Data Table</title>
+  <title>Object Data Table</title>
   <style>
     table {
       border-collapse: collapse;
       margin: 20px;
-      width: 50%;
+      width: 100%;
     }
     th, td {
       padding: 10px;
       border: 1px solid #444;
       text-align: left;
     }
+    th {
+      background-color: #f2f2f2;
+    }
   </style>
 </head>
 <body>
 
-  <h2>Extracted URL Data</h2>
-  <table id="data-table">
-    <thead>
-      <tr>
-        <th>Parameter</th>
-        <th>Value</th>
-      </tr>
-    </thead>
-    <tbody>
-      <!-- Data will be inserted here -->
-    </tbody>
-  </table>
+<h2>Object Data in Table</h2>
+<table id="data-table">
+  <thead>
+    <tr id="table-head"></tr>
+  </thead>
+  <tbody id="table-body"></tbody>
+</table>
 
-  <script>
-    // Function to extract and display URL parameters
-    function displayURLData() {
-      const urlParams = new URLSearchParams(window.location.search);
-      const tableBody = document.querySelector("#data-table tbody");
-
-      urlParams.forEach((value, key) => {
-        const row = document.createElement("tr");
-
-        const keyCell = document.createElement("td");
-        keyCell.textContent = key;
-
-        const valueCell = document.createElement("td");
-        valueCell.textContent = value;
-
-        row.appendChild(keyCell);
-        row.appendChild(valueCell);
-        tableBody.appendChild(row);
-      });
+<script>
+  // Sample data as array of objects
+  const data = [
+    {
+      "AGENT_NAME": "AJAY KUMAR",
+      "BUSINESS_TYPE": "PORTABILITY",
+      "CUSTOMER_NAME": "MS. Saidam  Sowmya",
+      "GWP": "24662",
+      "LOGIN_DATE": "02-May-2025",
+      "NO._OF_LIVES": "2",
+      "PAYMENT_AMOUNT": "29,101.00",
+      "PLAN": "Care Supreme",
+      "POLICY_NO.": "-",
+      "POLICY_START_DATE": "08-May-2025",
+      "PROPOSAL_NO.": "1120107502684",
+      "PROPOSAL_STATUS": "Primary:Payment Entry Task"
+    },
+    {
+      "AGENT_NAME": "AJAY KUMAR",
+      "BUSINESS_TYPE": "PORTABILITY",
+      "CUSTOMER_NAME": "MR. GAURAV  KUMAR SRIVASTAVA",
+      "GWP": "83348",
+      "LOGIN_DATE": "02-May-2025",
+      "NO._OF_LIVES": "2",
+      "PAYMENT_AMOUNT": "98,351.00",
+      "PLAN": "Care Supreme",
+      "POLICY_NO.": "-",
+      "POLICY_START_DATE": "04-May-2025",
+      "PROPOSAL_NO.": "1120107465157",
+      "PROPOSAL_STATUS": "Primary:Payment Entry Task"
     }
+  ];
 
-    // Call function on page load
-    window.onload = displayURLData;
-  </script>
+  function renderTable(data) {
+    const tableHead = document.getElementById("table-head");
+    const tableBody = document.getElementById("table-body");
+
+    if (data.length === 0) return;
+
+    // Get unique keys for headers
+    const headers = Object.keys(data[0]);
+
+    // Create table headers
+    headers.forEach(key => {
+      const th = document.createElement("th");
+      th.textContent = key;
+      tableHead.appendChild(th);
+    });
+
+    // Create table rows
+    data.forEach(item => {
+      const row = document.createElement("tr");
+      headers.forEach(key => {
+        const td = document.createElement("td");
+        td.textContent = item[key] || "";
+        row.appendChild(td);
+      });
+      tableBody.appendChild(row);
+    });
+  }
+
+  renderTable(data);
+</script>
 
 </body>
 </html>
