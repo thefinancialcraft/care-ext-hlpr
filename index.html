@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Object Data Table</title>
+  <title>URL Data to Table</title>
   <style>
     table {
       border-collapse: collapse;
@@ -12,54 +12,61 @@
     th, td {
       padding: 10px;
       border: 1px solid #444;
-      text-align: left;
     }
     th {
-      background-color: #f2f2f2;
+      background: #f2f2f2;
     }
   </style>
 </head>
 <body>
 
-<h2>Object Data in Table</h2>
+<h2>Data from URL</h2>
 <table id="data-table">
-  <thead>
-    <tr id="table-head"></tr>
-  </thead>
+  <thead><tr id="table-head"></tr></thead>
   <tbody id="table-body"></tbody>
 </table>
 
 <script>
-  // Sample data as array of objects
+  function getJSONFromURL() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const dataParam = urlParams.get("data");
+
+    if (!dataParam) return [];
+
+    try {
+      const decoded = decodeURIComponent(dataParam);
+      return JSON.parse(decoded);
+    } catch (e) {
+      console.error("Invalid JSON data:", e);
+      return [];
+    }
+  }
 
   function renderTable(data) {
+    if (!Array.isArray(data) || data.length === 0) return;
+
     const tableHead = document.getElementById("table-head");
     const tableBody = document.getElementById("table-body");
 
-    if (data.length === 0) return;
-
-    // Get unique keys for headers
     const headers = Object.keys(data[0]);
-
-    // Create table headers
     headers.forEach(key => {
       const th = document.createElement("th");
       th.textContent = key;
       tableHead.appendChild(th);
     });
 
-    // Create table rows
-    data.forEach(item => {
-      const row = document.createElement("tr");
+    data.forEach(row => {
+      const tr = document.createElement("tr");
       headers.forEach(key => {
         const td = document.createElement("td");
-        td.textContent = item[key] || "";
-        row.appendChild(td);
+        td.textContent = row[key] || "";
+        tr.appendChild(td);
       });
-      tableBody.appendChild(row);
+      tableBody.appendChild(tr);
     });
   }
 
+  const data = getJSONFromURL();
   renderTable(data);
 </script>
 
